@@ -21,3 +21,10 @@ vim.lsp.config('kotlin_lsp', {
     single_file_support = true,
 })
 vim.lsp.enable('kotlin_lsp')
+
+vim.lsp.config('c3lsp', {
+    cmd = { 'c3lsp' },
+    filetypes = { 'c3' },
+    root_markers = { '.git' }
+})
+vim.lsp.enable('c3lsp')

@@ -13,3 +13,7 @@ vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'c3' },
   callback = function() vim.treesitter.start() end,
 })
+
+if vim.g.neovide then
+    vim.o.guifont = "Annotation Mono Medium:h15"
+end
