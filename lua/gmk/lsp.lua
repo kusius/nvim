@@ -28,3 +28,10 @@ vim.lsp.config('c3lsp', {
     root_markers = { '.git' }
 })
 vim.lsp.enable('c3lsp')
+
+vim.lsp.config('gopls', {
+    cmd = { 'gopls' },
+    filetypes = { 'go' },
+    root_markers = { 'go.mod','.git' }
+})
+vim.lsp.enable('gopls')
