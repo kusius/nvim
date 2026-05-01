@@ -7,7 +7,7 @@ vim.lsp.config('luals', {
 vim.lsp.enable('luals')
 
 vim.lsp.config('clangd', {
-	cmd = { 'clangd' },
+	cmd = { '/opt/homebrew/opt/llvm/bin/clangd' },
 	root_markers = { 'compile_commands.json', 'compile_flags.txt', '.git' },
 	filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
 })

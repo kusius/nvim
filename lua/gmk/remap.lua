@@ -6,4 +6,4 @@ vim.keymap.set("n", "gf", "<C-i>", { desc = "Go forward in jump list" })
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
 vim.keymap.set("n", "<leader>a", ':<c-u>ArgonautToggle<cr>', {noremap = true, silent = true})
 vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
-
+vim.keymap.set("n", "<leader>e", vim.diagnostic.setqflist, { desc = "Show all diagnostics" })
