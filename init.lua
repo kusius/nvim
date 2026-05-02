@@ -1,4 +1,5 @@
 require("gmk")
+vim.o.exrc = true -- Allow per project settings override with .nvim.lua
 vim.opt.clipboard = "unnamedplus"
 vim.opt.number = true
 vim.opt.relativenumber = true

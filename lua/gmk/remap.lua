@@ -1,4 +1,4 @@
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>pv", "<CMD>Oil<CR>")
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" } )
 vim.keymap.set("n", "gb", "<C-o>", { desc = "Go back to previous position" })
