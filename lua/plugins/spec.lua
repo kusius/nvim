@@ -36,27 +36,6 @@ return {
     },
 
     {
-        "numToStr/Comment.nvim",
-        opts = {
-            mappings = false,
-        },
-        config = function(_, opts)
-            require("Comment").setup(opts)
-            -- Re-add only the line-comment mappings; skip the gb* block ones
-            -- because they clash with our gb mapping (go back) in remap.lua.
-            vim.keymap.set("n", "gcc",
-            "<Plug>(comment_toggle_linewise_current)",
-            { desc = "Comment current line" })
-            vim.keymap.set("n", "gc",
-            "<Plug>(comment_toggle_linewise)",
-            { desc = "Comment linewise" })
-            vim.keymap.set("x", "gc",
-            "<Plug>(comment_toggle_linewise_visual)",
-            { desc = "Comment linewise (visual)" })
-        end,
-    },
-
-    {
         "stevearc/conform.nvim",
         opts = {
             formatters_by_ft = { c = { "clang-format" }, cpp = { "clang-format" } },

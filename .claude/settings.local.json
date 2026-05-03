@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(nvim --version)",
+      "Bash(neovide --version)",
+      "WebSearch"
+    ]
+  }
+}

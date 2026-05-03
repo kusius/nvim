@@ -1,5 +1,6 @@
 require("gmk")
 vim.o.exrc = true -- Allow per project settings override with .nvim.lua
+vim.o.wrap = false
 vim.opt.clipboard = "unnamedplus"
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -18,3 +19,5 @@ vim.api.nvim_create_autocmd('FileType', {
 if vim.g.neovide then
     vim.o.guifont = "Annotation Mono Medium:h15"
 end
+
+
