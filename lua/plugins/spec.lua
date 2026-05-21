@@ -10,7 +10,15 @@ return {
                     contrast = "soft" -- can be "soft", "hard" or ""
                 }
             )
-            vim.cmd([[colorscheme gruvbox]])
+            -- vim.cmd([[colorscheme gruvbox]])
+            -- vim.o.background = "dark"
+        end,
+    },
+
+    {
+        "savq/melange-nvim",
+        config = function()
+            vim.cmd([[colorscheme melange]])
             vim.o.background = "dark"
         end,
     },
