@@ -8,3 +8,4 @@ vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Show line diagnos
 vim.keymap.set("n", "<leader>e", vim.diagnostic.setqflist, { desc = "Show all diagnostics" })
 
 -- toggleterm
+vim.keymap.set("t", "<C-q>", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
