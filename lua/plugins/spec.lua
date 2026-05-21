@@ -29,9 +29,22 @@ return {
     {
         "savq/melange-nvim",
         config = function()
-            vim.cmd([[colorscheme melange]])
-            vim.o.background = "dark"
+            -- vim.cmd([[colorscheme melange]])
+            -- vim.o.background = "dark"
         end,
+    },
+
+    {
+      "ember-theme/nvim",
+      name = "ember",
+      priority = 1000,
+      config = function()
+        require("ember").setup({
+          variant = "ember-soft", -- "ember" | "ember-soft" | "ember-light"
+        })
+        vim.cmd([[colorscheme ember-soft]])
+        vim.o.background = "dark"
+      end,
     },
 
     {
@@ -125,4 +138,11 @@ return {
         lazy = false,
     },
 
+    {
+        'nvim-lualine/lualine.nvim',
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
+        config = function()
+            require("lualine").setup()
+        end,
+    }
 }
