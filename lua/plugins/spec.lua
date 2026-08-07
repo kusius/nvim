@@ -1,5 +1,16 @@
 return {
     {
+        "0xKitsune/pr.nvim",
+        -- or use a local path:
+        -- dir = "~/path/to/pr.nvim",
+        dependencies = {
+            "nvim-telescope/telescope.nvim", -- optional
+        },
+        config = function()
+            require("pr").setup()
+        end,
+    },
+    {
         "ellisonleao/gruvbox.nvim" ,
         lazy = false, -- make sure we load this during startup if it is your main colorscheme
         priority = 1000, -- make sure to load this before all the other start plugins
@@ -34,7 +45,9 @@ return {
                 "lua",
                 "go",
                 "c3",
-                "json"
+                "json",
+                "ruby", "embedded_template", "html", "scss", "css",
+                "javascript", "yaml", "markdown", "markdown_inline",
             }
         end,
     },
@@ -98,12 +111,12 @@ return {
         config = function()
             -- load the colorscheme here
             require("oil").setup({
-                    default_file_explorer = true,
+                default_file_explorer = true,
 
-                    view_options = {
-                        show_hidden = true
-                    },
-                })
+                view_options = {
+                    show_hidden = true
+                },
+            })
         end,
         -- Optional dependencies
         dependencies = { { "nvim-mini/mini.icons", opts = {} } },

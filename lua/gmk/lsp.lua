@@ -1,3 +1,10 @@
+vim.lsp.config('ruby_lsp', {
+    cmd = { vim.fn.expand('~/.rbenv/shims/ruby-lsp') },
+    filetypes = { 'ruby', 'eruby' },
+    root_markers = { 'Gemfile', '.git' },
+})
+vim.lsp.enable('ruby_lsp')
+
 vim.lsp.config('luals', {
   cmd = {'lua-language-server'},
   filetypes = {'lua'},

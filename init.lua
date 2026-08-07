@@ -12,8 +12,14 @@ vim.opt.ignorecase = true  -- Ignore case in searches
 vim.opt.smartcase = true   -- Override ignorecase if search contains uppercase
 
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'c3' },
+  pattern = { 'c3', 'ruby', 'eruby', 'scss', 'css', 'html',
+              'javascript', 'javascriptreact', 'yaml'},
   callback = function() vim.treesitter.start() end,
+})
+
+vim.filetype.add({
+  extension = { thor = "ruby", jbuilder = "ruby" },
+  filename  = { Guardfile = "ruby", Capfile = "ruby", ["packwerk.yml"] = "yaml" },
 })
 
 if vim.g.neovide then

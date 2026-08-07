@@ -7,5 +7,9 @@ vim.keymap.set("n", "<leader>a", ':<c-u>ArgonautToggle<cr>', {noremap = true, si
 vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
 vim.keymap.set("n", "<leader>e", vim.diagnostic.setqflist, { desc = "Show all diagnostics" })
 
+-- lua (yog specific)
+vim.keymap.set("n", "<leader>ta", "<CMD>A<CR>",  { desc = "Rails: alternate (impl <-> spec)" })
+vim.keymap.set("n", "<leader>tv", "<CMD>AV<CR>", { desc = "Rails: alternate in vsplit" })
+
 -- toggleterm
 vim.keymap.set("t", "<C-q>", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
