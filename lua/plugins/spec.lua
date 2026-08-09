@@ -11,6 +11,16 @@ return {
         end,
     },
     {
+        "lewis6991/gitsigns.nvim",
+        lazy = false,
+        config = function()
+            require("gitsigns").setup {
+                auto_attach = true,
+                current_line_blame = true,
+            }
+        end,
+    },
+    {
         "ellisonleao/gruvbox.nvim" ,
         lazy = false, -- make sure we load this during startup if it is your main colorscheme
         priority = 1000, -- make sure to load this before all the other start plugins
@@ -124,12 +134,13 @@ return {
         config = function()
             -- load the colorscheme here
             require("oil").setup({
-                default_file_explorer = true,
+                    default_file_explorer = true,
+                    skip_confirm_for_simple_edits = true,
 
-                view_options = {
-                    show_hidden = true
-                },
-            })
+                    view_options = {
+                        show_hidden = true
+                    },
+                })
         end,
         -- Optional dependencies
         dependencies = { { "nvim-mini/mini.icons", opts = {} } },
