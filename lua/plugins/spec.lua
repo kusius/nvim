@@ -35,7 +35,18 @@ return {
             -- vim.o.background = "dark"
         end,
     },
-
+    {
+        "Aejkatappaja/cendre",
+        lazy = false,
+        priority = 1000,
+        config = function()
+            require("cendre").setup({
+                background = "cendre", -- "hard" | "medium" | "soft"
+                italic_virtual_text = true,
+            })
+            vim.cmd.colorscheme("cendre")
+        end,
+    },
     {
         "savq/melange-nvim",
         config = function()
@@ -52,8 +63,8 @@ return {
         require("ember").setup({
           variant = "ember-soft", -- "ember" | "ember-soft" | "ember-light"
         })
-        vim.cmd([[colorscheme ember-soft]])
-        vim.o.background = "dark"
+        -- vim.cmd([[colorscheme ember-soft]])
+        -- vim.o.background = "dark"
       end,
     },
 
