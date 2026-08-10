@@ -22,10 +22,21 @@ vim.lsp.config('clangd', {
 vim.lsp.enable('clangd')
 
 vim.lsp.config('kotlin_lsp', {
-    cmd = vim.lsp.rpc.connect('127.0.0.1', tonumber(9999)),
-    filetypes = { "kotlin" },
-    root_markers = { "build.gradle", "build.gradle.kts", "pom.xml" },
-    single_file_support = true,
+    -- cmd = vim.lsp.rpc.connect('127.0.0.1', 9999),
+    cmd = {
+        vim.fn.expand('~/.local/share/kotlin-lsp-enhanced/bin/enhanced-server'),
+        '--stdio',
+    },
+    filetypes = { 'kotlin' },
+    init_options = {
+        defaultSdk = vim.fn.expand('~/Library/Java/JavaVirtualMachines/openjdk-26.0.2/Contents/Home'),
+        buildTools = { ['file://' .. vim.fn.expand('~/Work/nutrichum/client')] = 'json' },
+    },
+    root_markers = {
+        { 'settings.gradle.kts', 'settings.gradle' },  -- true project root
+        { 'build.gradle.kts', 'build.gradle', 'pom.xml' },
+        '.git',
+    },
 })
 vim.lsp.enable('kotlin_lsp')
 

@@ -13,3 +13,10 @@ vim.keymap.set("n", "<leader>tv", "<CMD>AV<CR>", { desc = "Rails: alternate in v
 
 -- toggleterm
 vim.keymap.set("t", "<C-q>", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
+
+vim.api.nvim_create_user_command("Makes", function(opts)
+vim.cmd("silent make " .. opts.args .. " | redraw!")
+if not vim.tbl_isempty(vim.fn.getqflist()) then
+  vim.cmd("copen") -- open and focus the quickfix window
+end
+end, { nargs = "*", desc = "Compile silently and focus quickfix" })
