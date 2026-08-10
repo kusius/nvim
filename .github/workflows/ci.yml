@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: nvim stable
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: stable
+
+      # nvim-treesitter (main branch) shells out to the tree-sitter CLI and a C
+      # compiler to build parsers; gcc and make are already on the runner.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install -g tree-sitter-cli
+
+      - name: Cache plugin checkouts
+        uses: actions/cache@v4
+        with:
+          path: .nvim-test-data
+          key: nvim-stable-${{ hashFiles('lazy-lock.json') }}
+          restore-keys: nvim-stable-
+
+      - name: Run tests
+        env:
+          NVIM_TEST_DATA_HOME: ${{ github.workspace }}/.nvim-test-data
+        run: ./tests/run.sh
