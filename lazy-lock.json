@@ -1,5 +1,6 @@
 {
   "argonaut.nvim": { "branch": "master", "commit": "7f03ad8914d815d6a857158e8443dce987f4c890" },
+  "cendre": { "branch": "main", "commit": "9439ff8e1b7b9af952e922bf62b3f367ea02fe26" },
   "conform.nvim": { "branch": "master", "commit": "dca1a190aa85f9065979ef35802fb77131911106" },
   "ember": { "branch": "main", "commit": "7365b8dede43a82ed1df741275b75333422e5402" },
   "gitsigns.nvim": { "branch": "main", "commit": "31d6fb2d618bca1482b9f274751ead5f03461408" },
@@ -11,8 +12,8 @@
   "mini.icons": { "branch": "main", "commit": "bac6317300e205335df425296570d84322730067" },
   "multiple-cursors.nvim": { "branch": "main", "commit": "1ac15d047a4b265cc2389957bcc56ee561b29e02" },
   "nvim-treesitter": { "branch": "main", "commit": "4916d6592ede8c07973490d9322f187e07dfefac" },
-  "nvim-web-devicons": { "branch": "master", "commit": "4fc505ac7bd7692824a142e96e5f529c133862f8" },
-  "octo.nvim": { "branch": "master", "commit": "34e67cc2d247e9b9271e2b54baeb6d4f6d1035bb" },
+  "nvim-web-devicons": { "branch": "master", "commit": "2ae6958df7ced50baac5035cec0c15799eedfbf7" },
+  "octo.nvim": { "branch": "master", "commit": "205f024d3ea4a3d81aac751b6bf8e2d01e0c204f" },
   "oil.nvim": { "branch": "master", "commit": "0fcc83805ad11cf714a949c98c605ed717e0b83e" },
   "plenary.nvim": { "branch": "master", "commit": "74b06c6c75e4eeb3108ec01852001636d85a932b" },
   "pr.nvim": { "branch": "main", "commit": "15a0583ca5e896dbe034ac3428b1984851cd2cc6" },

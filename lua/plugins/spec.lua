@@ -35,7 +35,18 @@ return {
             -- vim.o.background = "dark"
         end,
     },
-
+    {
+        "Aejkatappaja/cendre",
+        lazy = false,
+        priority = 1000,
+        config = function()
+            require("cendre").setup({
+                background = "cendre", -- "hard" | "medium" | "soft"
+                italic_virtual_text = true,
+            })
+            vim.cmd.colorscheme("cendre")
+        end,
+    },
     {
         "savq/melange-nvim",
         config = function()
@@ -52,8 +63,8 @@ return {
         require("ember").setup({
           variant = "ember-soft", -- "ember" | "ember-soft" | "ember-light"
         })
-        vim.cmd([[colorscheme ember-soft]])
-        vim.o.background = "dark"
+        -- vim.cmd([[colorscheme ember-soft]])
+        -- vim.o.background = "dark"
       end,
     },
 
@@ -153,7 +164,29 @@ return {
         'nvim-lualine/lualine.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
         config = function()
-            require("lualine").setup()
+            require("lualine").setup({
+                winbar = {
+                    lualine_c = { { 'filename', path = 0, file_status = true} },
+                },
+                inactive_winbar = {
+                    lualine_c = { { 'filename', path = 0, file_status = true } },
+                },
+                tabline = {
+                },
+                -- bottom
+                sections = {
+                    lualine_a = {'mode'},
+                    lualine_b = {'diagnostics'},
+                    lualine_c = {'branch'},
+                    lualine_x = {'filetype'},
+                    lualine_y = {'progress'},
+                    lualine_z = {'location'}
+                },
+                inactive_sections = {
+                    lualine_c = {},
+                    lualine_x = {}
+                }
+            })
         end,
     }
 }
