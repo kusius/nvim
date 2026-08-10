@@ -3,7 +3,10 @@
     "allow": [
       "Bash(nvim --version)",
       "Bash(neovide --version)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(export SCRATCH=/private/tmp/claude-501/-Users-georgek--config-nvim/1467ead2-b964-4d27-802c-80aef52061da/scratchpad)",
+      "Bash(rm -rf /private/tmp/claude-501/-Users-georgek--config-nvim/1467ead2-b964-4d27-802c-80aef52061da/scratchpad/mini-test)",
+      "Bash(git clone *)"
     ]
   }
 }

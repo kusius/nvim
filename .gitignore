@@ -1,3 +1,6 @@
+# Cached plugin checkouts for tests/run.sh
+/.nvim-test-data/
+
 # Tools
 /.direnv/
 /venv/
