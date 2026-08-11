@@ -106,7 +106,7 @@ end
 -- checked. parametrize runs the same case once per server, and reports each
 -- one separately.
 T["lsp"] = MiniTest.new_set({
-  parametrize = { { "ruby_lsp" }, { "luals" }, { "clangd" }, { "kotlin_lsp" }, { "c3lsp" }, { "gopls" } },
+  parametrize = { { "ruby_lsp" }, { "luals" }, { "clangd" }, { "kmp_lsp" }, { "c3lsp" }, { "gopls" } },
 })
 
 T["lsp"]["server is registered with a command"] = function(server)
