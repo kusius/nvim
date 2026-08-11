@@ -10,6 +10,9 @@ return {
         },
         config = function()
             require("telescope").setup({
+                defaults = {
+                    path_display = { "filename_first" },
+                },
                 pickers = {
                     find_files = {
                         find_command = {

@@ -56,16 +56,16 @@ return {
     },
 
     {
-      "ember-theme/nvim",
-      name = "ember",
-      priority = 1000,
-      config = function()
-        require("ember").setup({
-          variant = "ember-soft", -- "ember" | "ember-soft" | "ember-light"
-        })
-        -- vim.cmd([[colorscheme ember-soft]])
-        -- vim.o.background = "dark"
-      end,
+        "ember-theme/nvim",
+        name = "ember",
+        priority = 1000,
+        config = function()
+            require("ember").setup({
+                variant = "ember-soft", -- "ember" | "ember-soft" | "ember-light"
+            })
+            -- vim.cmd([[colorscheme ember-soft]])
+            -- vim.o.background = "dark"
+        end,
     },
 
     {
@@ -145,13 +145,13 @@ return {
         config = function()
             -- load the colorscheme here
             require("oil").setup({
-                    default_file_explorer = true,
-                    skip_confirm_for_simple_edits = true,
+                default_file_explorer = true,
+                skip_confirm_for_simple_edits = true,
 
-                    view_options = {
-                        show_hidden = true
-                    },
-                })
+                view_options = {
+                    show_hidden = true
+                },
+            })
         end,
         -- Optional dependencies
         dependencies = { { "nvim-mini/mini.icons", opts = {} } },
@@ -188,5 +188,49 @@ return {
                 }
             })
         end,
+    },
+
+    {
+        'saghen/blink.cmp',
+        -- optional: provides snippets for the snippet source
+        dependencies = { 'rafamadriz/friendly-snippets' },
+        -- use a release tag to download pre-built binaries
+        version = '1.*',
+        opts = {
+            -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
+            -- 'super-tab' for mappings similar to vscode (tab to accept)
+            -- 'enter' for enter to accept
+            -- 'none' for no mappings
+            --
+            -- All presets have the following mappings:
+            -- C-space: Open menu or open docs if already open
+            -- C-n/C-p or Up/Down: Select next/previous item
+            -- C-e: Hide menu
+            -- C-k: Toggle signature help (if signature.enabled = true)
+            --
+            -- See :h blink-cmp-config-keymap for defining your own keymap
+            keymap = { 
+                preset = 'default',
+                ['<C-S-i>'] = { 'show', 'show_documentation', 'hide_documentation' },
+            },
+
+            appearance = {
+                nerd_font_variant = 'mono'
+            },
+
+            completion = {
+                menu = {
+                    auto_show = false
+                },
+                documentation = {auto_show = false}
+            },
+
+            sources = {
+                default = { 'lsp', 'path', 'snippets', 'buffer' },
+            },
+
+            fuzzy = { implementation = "prefer_rust_with_warning" }
+        },
+        opts_extend = { "sources.default" }
     }
 }

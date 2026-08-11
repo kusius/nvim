@@ -26,8 +26,37 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'c3', 'ruby', 'eruby', 'scss', 'css', 'html',
-              'javascript', 'javascriptreact', 'yaml'},
+              'javascript', 'javascriptreact', 'yaml', 'kotlin', 'java' },
   callback = function() vim.treesitter.start() end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  group = vim.api.nvim_create_augroup('TreesitterFolding', { clear = true }),
+  callback = function(args)
+    if not pcall(vim.treesitter.get_parser, args.buf) then return end
+    vim.opt_local.foldmethod = 'expr'
+    vim.opt_local.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+    vim.opt_local.foldlevel = 99
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  group = vim.api.nvim_create_augroup('FoldImports', { clear = true }),
+  pattern = { 'kotlin', 'java' },
+  callback = function(args)
+    vim.schedule(function()
+      if not vim.api.nvim_buf_is_valid(args.buf) then return end
+      for i, line in ipairs(vim.api.nvim_buf_get_lines(args.buf, 0, 300, false)) do
+        if line:match('^import%s') then
+          pcall(vim.api.nvim_buf_call, args.buf, function()
+            vim.cmd('normal! zx')
+            vim.cmd(i .. 'foldclose')
+          end)
+          return
+        end
+      end
+    end)
+  end,
 })
 
 vim.filetype.add({
