@@ -10,6 +10,19 @@ vim.opt.expandtab = true   -- Convert tabs to spaces
 vim.opt.softtabstop = 4    -- Number of spaces for <Tab> in insert mode
 vim.opt.ignorecase = true  -- Ignore case in searches
 vim.opt.smartcase = true   -- Override ignorecase if search contains uppercase
+vim.opt.cursorline = true  -- Band the line the cursor is on
+
+-- Fixed blue band on the cursor line, independent of the theme. Re-applied on
+-- every :colorscheme, since loading a scheme clears highlight groups.
+local function set_cursorline()
+  vim.api.nvim_set_hl(0, 'CursorLine', { bg = '#1c1c44' })
+end
+
+vim.api.nvim_create_autocmd('ColorScheme', {
+  group = vim.api.nvim_create_augroup('CursorLineTint', { clear = true }),
+  callback = set_cursorline,
+})
+set_cursorline()
 
 -- Automatically go to the last cursor position when reopening a closed buf
 -- FYI: double quotes (") is the special marker denoting the last cursor position
@@ -25,7 +38,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 })
 
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'c3', 'ruby', 'eruby', 'scss', 'css', 'html',
+  pattern = { 'c3', 'ruby', 'eruby', 'scss', 'css', 'html', 'lua',
               'javascript', 'javascriptreact', 'yaml', 'kotlin', 'java' },
   callback = function() vim.treesitter.start() end,
 })
