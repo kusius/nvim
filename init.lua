@@ -40,7 +40,8 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'c3', 'ruby', 'eruby', 'scss', 'css', 'html', 'lua',
               'javascript', 'javascriptreact', 'yaml', 'kotlin', 'java' },
-  callback = function() vim.treesitter.start() end,
+  -- pcall: decompiled jar:// stubs open as java, whose parser may not be installed.
+  callback = function() pcall(vim.treesitter.start) end,
 })
 
 vim.api.nvim_create_autocmd('FileType', {
