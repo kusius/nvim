@@ -23,6 +23,38 @@ vim.keymap.set("n", "<leader>tv", "<CMD>AV<CR>", { desc = "Rails: alternate in v
 -- toggleterm
 vim.keymap.set("t", "<C-q>", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
 
+-- Hand the current file and cursor to Android Studio, for what it still does better:
+-- Compose previews, profiler, layout inspector. The Toolbox 'studio' launcher reuses a
+-- running instance, so this focuses the open window instead of starting a second IDE.
+-- (The documented HTTP API on :63342 answers 404 for /api/file here, hence the CLI.)
+vim.api.nvim_create_user_command("OpenInStudio", function()
+  local file = vim.api.nvim_buf_get_name(0)
+  if file == "" then
+    vim.notify("Buffer has no file to open", vim.log.levels.ERROR)
+    return
+  end
+  if vim.fn.executable("studio") == 0 then
+    vim.notify("'studio' launcher not on PATH (JetBrains Toolbox installs it)", vim.log.levels.ERROR)
+    return
+  end
+  if vim.bo.modified then
+    vim.notify("Buffer has unsaved changes; Studio shows the file on disk", vim.log.levels.WARN)
+  end
+
+  local pos = vim.api.nvim_win_get_cursor(0)
+  vim.system(
+    { "studio", "--line", tostring(pos[1]), "--column", tostring(pos[2] + 1), file },
+    { detach = true },
+    function(res)
+      if res.code ~= 0 then
+        vim.schedule(function()
+          vim.notify("studio exited " .. res.code .. ": " .. (res.stderr or ""), vim.log.levels.ERROR)
+        end)
+      end
+    end
+  )
+end, { desc = "Open current file at cursor in Android Studio" })
+
 vim.api.nvim_create_user_command("Makes", function(opts)
 vim.cmd("silent make " .. opts.args .. " | redraw!")
 if not vim.tbl_isempty(vim.fn.getqflist()) then
