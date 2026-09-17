@@ -14,7 +14,7 @@ vim.lsp.config('luals', {
 vim.lsp.enable('luals')
 
 vim.lsp.config('clangd', {
-	cmd = { '/opt/homebrew/opt/llvm/bin/clangd' },
+	cmd = { require('gmk.tools').executable('clangd', '/opt/homebrew/opt/llvm/bin/clangd') },
 	root_markers = { 'compile_commands.json', 'compile_flags.txt', '.git' },
 	filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
 })
@@ -37,6 +37,8 @@ vim.lsp.enable('clangd')
 -- The -D property is required or the Gradle import dies outright -- the bundled
 -- JBR is a 'nomod' build with no jlink, so AGP's JdkImageTransform fails
 -- (Kotlin/kotlin-lsp#240, still open in 263.4702.0). JAVA_HOME is ignored.
+-- Any installed JDK will do; gmk.tools finds one (see $KOTLIN_LSP_GRADLE_JAVA_HOME).
+local gradle_import_jdk = require('gmk.tools').jdk_for_gradle_import()
 -- IntelliJ inspections with no server-side off switch (Kotlin/kotlin-lsp#52). FunctionName
 -- fires on every @Composable, since the server has no Compose awareness (#191). ktlint with
 -- the compose ruleset reports naming correctly instead -- see nvim-lint in plugins/spec.lua.
@@ -63,13 +65,17 @@ vim.lsp.config('kotlin_lsp', {
             return vim.lsp.handlers['textDocument/diagnostic'](err, drop_ignored_diagnostics(result), ctx, config)
         end,
     },
-    cmd_env = {
-        IJ_JAVA_OPTIONS = '-Dcom.jetbrains.ls.imports.gradle.java.home='
-            .. '/Users/georgek/Library/Java/JavaVirtualMachines/corretto-21.0.7/Contents/Home',
-    },
+    cmd_env = gradle_import_jdk and {
+        IJ_JAVA_OPTIONS = '-Dcom.jetbrains.ls.imports.gradle.java.home=' .. gradle_import_jdk,
+    } or nil,
     root_markers = { 'settings.gradle.kts', 'settings.gradle', 'build.gradle.kts', 'pom.xml', '.git' },
 })
 vim.lsp.enable('kotlin_lsp')
+
+-- kotlin-lsp, ktlint, the compose ruleset and the Gradle init script all live
+-- outside this repo. Offer to install whatever is missing, once, when a Kotlin
+-- file in a Gradle project is opened.
+require('gmk.android_setup').setup()
 
 -- Go-to-definition into a library returns jar:///path/to.jar!/pkg/Class.class, which
 -- Neovim cannot read: it opens an empty buffer and then errors on the cursor position

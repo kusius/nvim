@@ -21,17 +21,21 @@ brew "tree-sitter-cli" # required by the `main` branch; must NOT come from npm
 
 # --- LSP servers (lua/gmk/lsp.lua) -----------------------------------------
 brew "lua-language-server"
-brew "llvm"            # clangd is hard-coded to /opt/homebrew/opt/llvm/bin/clangd
-                       # (Apple's /usr/bin/clangd is deliberately not used);
-                       # also provides clang-format for conform.nvim
+brew "llvm"            # preferred clangd + lldb-dap (gmk.tools falls back to
+                       # $PATH, so Apple's /usr/bin/clangd is only used if this
+                       # is absent); also provides clang-format for conform.nvim
 brew "go"              # toolchain for gopls (see manual steps below)
 brew "rbenv"           # ruby_lsp cmd is hard-coded to ~/.rbenv/shims/ruby-lsp
 brew "ruby-build"
 
-# kotlin_lsp connects to 127.0.0.1:9999 and expects a server you start yourself.
-# Left commented: as of 2026-08-06 the standalone JetBrains servers could not
-# handle the AGP 9 Android project, and that integration was reverted.
-# brew "kotlin-lsp"
+cask "kotlin-lsp"      # JetBrains Kotlin LSP, started over stdio (lua/gmk/lsp.lua).
+                       # Needs 263+ for the jar:// decompile handler in lsp.lua;
+                       # if the cask is older, install the release manually and
+                       # put `kotlin-lsp` earlier on $PATH.
+brew "ktlint"          # nvim-lint diagnostics + conform `gq` formatting for Kotlin.
+                       # The compose ruleset jar it loads is fetched separately:
+                       # scripts/setup-kotlin-android.sh (offered automatically the
+                       # first time a Kotlin file is opened in a Gradle project).
 
 # --- Terminal integrations (lua/plugins/toggleterm.lua) --------------------
 brew "lazygit"                 # <leader>lz

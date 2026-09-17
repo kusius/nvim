@@ -12,6 +12,30 @@ brew bundle --file ~/.config/nvim/Brewfile
 See the comments at the bottom of the `Brewfile` for the few things Homebrew
 can't provide (gopls, ruby-lsp, c3lsp, `gh auth login`).
 
+## Kotlin / Android
+
+Four things live outside this repo, and the config degrades quietly without
+them: `kotlin-lsp`, `ktlint`, the compose-rules ruleset jar that teaches ktlint
+about `@Composable` naming, and a Gradle init script that keeps kotlin-lsp's
+Android import from coming back empty (Kotlin/kotlin-lsp#225).
+
+Opening a Kotlin file in a Gradle project offers to install whatever is
+missing, once per machine. To do it by hand:
+
+```sh
+./scripts/setup-kotlin-android.sh            # everything missing
+./scripts/setup-kotlin-android.sh ruleset    # or single steps
+```
+
+or from inside Neovim: `:KotlinAndroidSetup` (`:KotlinAndroidSetup!` skips the
+question). Answering "Never on this machine" writes a marker into
+`stdpath('state')`; delete it to be asked again.
+
+The init script is symlinked from `gradle/init.d/` into `~/.gradle/init.d/`, so
+it is inert for ordinary builds and CI — it only acts while kotlin-lsp imports.
+`$KOTLIN_LSP_GRADLE_JAVA_HOME` overrides the JDK picked for that import, and
+`$KTLINT_COMPOSE_RULESET` overrides the ruleset jar.
+
 ## Tests
 
 `./tests/run.sh` starts Neovim with this repo as the config in a throwaway XDG

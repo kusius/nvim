@@ -76,16 +76,8 @@ return {
                     -- against default rules. Pass the real path, and the compose ruleset.
                     args = function(_, ctx)
                         local args = { '--format', '--stdin', '--log-level=none', '--stdin-path=' .. ctx.filename }
-                        local root = vim.fs.root(ctx.filename, { 'settings.gradle.kts', 'settings.gradle', 'pom.xml', '.git' })
-                        for _, jar in ipairs({
-                            root and (root .. '/.ktlint/ktlint-compose.jar'),
-                            vim.fn.expand('~/.ktlint/ktlint-compose.jar'),
-                        }) do
-                            if jar and vim.uv.fs_stat(jar) then
-                                table.insert(args, '--ruleset=' .. jar)
-                                break
-                            end
-                        end
+                        local jar = require('gmk.tools').ktlint_compose_ruleset(ctx.filename)
+                        if jar then table.insert(args, '--ruleset=' .. jar) end
                         return args
                     end,
                 },
@@ -221,21 +213,11 @@ return {
         -- Per-project ruleset first (nutrichum downloads its own), else the shared copy.
         -- '.ktlint' is deliberately not a root marker: ~/.ktlint would then resolve every
         -- project's root to $HOME.
-        local function compose_ruleset(fname)
-            local root = vim.fs.root(fname, { 'settings.gradle.kts', 'settings.gradle', 'pom.xml', '.git' })
-            for _, jar in ipairs({
-                root and (root .. '/.ktlint/ktlint-compose.jar'),
-                vim.fn.expand('~/.ktlint/ktlint-compose.jar'),
-            }) do
-                if jar and vim.uv.fs_stat(jar) then return jar end
-            end
-        end
-
         -- A function, not a table: the ruleset path is per buffer. stdin is off so ktlint
         -- resolves the project's .editorconfig next to the file, whatever :pwd happens to be.
         lint.linters.ktlint = function()
             local args = { '--reporter=json', '--log-level=none' }
-            local jar = compose_ruleset(vim.api.nvim_buf_get_name(0))
+            local jar = require('gmk.tools').ktlint_compose_ruleset(vim.api.nvim_buf_get_name(0))
             if jar then table.insert(args, '--ruleset=' .. jar) end
             return {
                 cmd = 'ktlint',

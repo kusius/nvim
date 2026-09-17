@@ -26,7 +26,7 @@ return  {
             -- Switched off codelldb because of post-continue breakpoint flakiness on macOS.
             dap.adapters["lldb-dap"] = {
                 type = "executable",
-                command = "/opt/homebrew/opt/llvm/bin/lldb-dap",
+                command = require("gmk.tools").executable("lldb-dap", "/opt/homebrew/opt/llvm/bin/lldb-dap"),
                 name = "lldb-dap",
             }
 
