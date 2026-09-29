@@ -1,5 +1,11 @@
 return {
     {
+        "https://codeberg.org/vi6jm/scry.nvim",
+        config = function()
+            require("scry").setup()
+        end,
+    },
+    {
         "0xKitsune/pr.nvim",
         -- or use a local path:
         -- dir = "~/path/to/pr.nvim",
