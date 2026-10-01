@@ -13,8 +13,10 @@ vim.lsp.config('luals', {
 
 vim.lsp.enable('luals')
 
+local clangd_cmd = '/opt/homebrew/opt/llvm/bin/clangd'
+if (vim.fn.has('bsd') == 1) then clangd_cmd = '/usr/local/bin/clangd' end
 vim.lsp.config('clangd', {
-	cmd = { '/opt/homebrew/opt/llvm/bin/clangd' },
+	cmd = { clangd_cmd },
 	root_markers = { 'compile_commands.json', 'compile_flags.txt', '.git' },
 	filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
 })

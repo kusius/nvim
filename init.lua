@@ -11,6 +11,7 @@ vim.opt.softtabstop = 4    -- Number of spaces for <Tab> in insert mode
 vim.opt.ignorecase = true  -- Ignore case in searches
 vim.opt.smartcase = true   -- Override ignorecase if search contains uppercase
 vim.opt.cursorline = true  -- Band the line the cursor is on
+vim.opt.tags:append({"/var/db/sys_tags,/var/db/libc.tags"})
 
 -- Fixed blue band on the cursor line, independent of the theme. Re-applied on
 -- every :colorscheme, since loading a scheme clears highlight groups.

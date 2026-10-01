@@ -1,3 +1,8 @@
+local make_command = "make"
+if vim.fn.has("bsd") == 1 then
+    make_command = "gmake"
+end
+
 return {
     {
         "nvim-telescope/telescope.nvim", version = "*",
@@ -6,7 +11,10 @@ return {
             { "nvim-lua/plenary.nvim" },
             -- C fuzzy sorter; the Lua default re-scores every candidate on each
             -- keystroke, which is the real bottleneck on big repos (yogurt: ~44k files)
-            { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+            {
+                "nvim-telescope/telescope-fzf-native.nvim",
+                build = make_command
+            },
         },
         config = function()
             require("telescope").setup({
