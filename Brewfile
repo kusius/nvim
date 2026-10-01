@@ -63,3 +63,7 @@ cask "neovide"                  # optional GUI
 #              add the `c3c` compiler if you actually build C3
 #   Annotation Mono — set as the Neovide guifont in init.lua:26; install the
 #                     font file manually or change that line
+#
+# --- OpenBSD --------------------------------------------
+# and the other dependencies are pretty much one to one
+# doas pkg_add gmake
