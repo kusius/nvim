@@ -36,7 +36,7 @@ vim.lsp.enable('clangd')
 -- Install: brew install JetBrains/utils/kotlin-lsp
 -- The -D property is required or the Gradle import dies outright -- the bundled
 -- JBR is a 'nomod' build with no jlink, so AGP's JdkImageTransform fails
--- (Kotlin/kotlin-lsp#240, still open in 263.4702.0). JAVA_HOME is ignored.
+-- (Kotlin/kotlin-lsp#240, still open in 263.7084.0). JAVA_HOME is ignored.
 -- IntelliJ inspections with no server-side off switch (Kotlin/kotlin-lsp#52). FunctionName
 -- fires on every @Composable, since the server has no Compose awareness (#191). ktlint with
 -- the compose ruleset reports naming correctly instead -- see nvim-lint in plugins/spec.lua.
