@@ -197,7 +197,15 @@ return {
                 lualine_a = {'mode'},
                 lualine_b = {'diagnostics'},
                 lualine_c = {'branch'},
-                lualine_x = { function() return lsp_progress end, 'filetype' },
+                lualine_x = {
+                    function() return lsp_progress end,
+                    {
+                        require('lazy.status').updates,
+                        cond = require('lazy.status').has_updates,
+                        on_click = function() vim.cmd('Lazy') end,
+                    },
+                    'filetype',
+                },
                 lualine_y = {'progress'},
                 lualine_z = {'location'}
             },
