@@ -14,10 +14,16 @@ return {
         "lewis6991/gitsigns.nvim",
         lazy = false,
         config = function()
-            require("gitsigns").setup {
+            local gitsigns = require("gitsigns")
+            gitsigns.setup {
                 auto_attach = true,
                 current_line_blame = true,
             }
+            vim.keymap.set('n', '<leader>gd', gitsigns.diffthis, { desc = 'Gitsigns: diff file against index' })
+            vim.keymap.set('n', '<leader>gp', gitsigns.preview_hunk, { desc = 'Gitsigns: preview hunk diff' })
+            vim.keymap.set('n', '<leader>gb', gitsigns.blame, { desc = 'Gitsigns: blame file' })
+            vim.keymap.set('n', '<leader>gl', function() gitsigns.blame_line({ full = true }) end,
+                { desc = 'Gitsigns: blame line (full commit)' })
         end,
     },
     {
@@ -28,6 +34,7 @@ return {
             require("cendre").setup({
                 background = "cendre", -- "hard" | "medium" | "soft"
                 italic_virtual_text = true,
+                transparent = true,
             })
             vim.cmd.colorscheme("cendre")
         end,
@@ -150,10 +157,33 @@ return {
         lazy = false,
     },
     {
-        "maelwalser/oil-bar.nvim",
-        dependencies = { "stevearc/oil.nvim" },
-        opts = {
-            keymap = "<leader>p" 
+        "nvim-mini/mini.files",
+        dependencies = { "nvim-mini/mini.icons" },
+        config = function()
+            require("mini.files").setup()
+            -- <CR> opens the file and closes the tree, like 'L'. mini.files maps no <CR> itself.
+            vim.api.nvim_create_autocmd("User", {
+                group = vim.api.nvim_create_augroup("MiniFilesEnter", { clear = true }),
+                pattern = "MiniFilesBufferCreate",
+                callback = function(args)
+                    vim.keymap.set("n", "<CR>", function() MiniFiles.go_in({ close_on_file = true }) end,
+                        { buffer = args.data.buf_id, desc = "MiniFiles: open entry" })
+                end,
+            })
+        end,
+        keys = {
+            {
+                "<leader>p",
+                function()
+                    -- Open at the current file, so the tree shows its directory with it selected.
+                    -- An Oil buffer has an oil:// name, so ask Oil for its directory instead.
+                    local path = vim.bo.filetype == "oil" and require("oil").get_current_dir()
+                        or vim.api.nvim_buf_get_name(0)
+                    if path == nil or not vim.uv.fs_stat(path) then path = nil end
+                    require("mini.files").open(path, false)
+                end,
+                desc = "MiniFiles: open tree at current file",
+            },
         },
     },
     {
@@ -213,78 +243,6 @@ return {
                 lualine_c = {},
                 lualine_x = {}
             }
-        })
-    end,
-},
-{
-    -- ktlint, so Kotlin naming is judged by the compose ruleset instead of kotlin-lsp:
-    -- the server flags every @Composable as "should start with a lowercase letter"
-    -- (Kotlin/kotlin-lsp#191) and offers no way to disable an inspection (#52), so that
-    -- diagnostic is filtered in gmk/lsp.lua and ktlint reports naming correctly here.
-    'mfussenegger/nvim-lint',
-    ft = { 'kotlin' },
-    config = function()
-        local lint = require('lint')
-
-        -- Per-project ruleset first (nutrichum downloads its own), else the shared copy.
-        -- '.ktlint' is deliberately not a root marker: ~/.ktlint would then resolve every
-        -- project's root to $HOME.
-        local function compose_ruleset(fname)
-            local root = vim.fs.root(fname, { 'settings.gradle.kts', 'settings.gradle', 'pom.xml', '.git' })
-            for _, jar in ipairs({
-                root and (root .. '/.ktlint/ktlint-compose.jar'),
-                vim.fn.expand('~/.ktlint/ktlint-compose.jar'),
-            }) do
-                if jar and vim.uv.fs_stat(jar) then return jar end
-            end
-        end
-
-        -- A function, not a table: the ruleset path is per buffer. stdin is off so ktlint
-        -- resolves the project's .editorconfig next to the file, whatever :pwd happens to be.
-        lint.linters.ktlint = function()
-            local args = { '--reporter=json', '--log-level=none' }
-            local jar = compose_ruleset(vim.api.nvim_buf_get_name(0))
-            if jar then table.insert(args, '--ruleset=' .. jar) end
-            return {
-                cmd = 'ktlint',
-                stdin = false,
-                append_fname = true,
-                stream = 'stdout',
-                ignore_exitcode = true,
-                args = args,
-                parser = function(output)
-                    if output == '' then return {} end
-                    local ok, report = pcall(vim.json.decode, output)
-                    if not ok or type(report) ~= 'table' then return {} end
-                    local diagnostics = {}
-                    for _, file in ipairs(report) do
-                        for _, e in ipairs(file.errors or {}) do
-                            -- Keep the rule id: 'compose:naming-check' explains itself in a
-                            -- way the bare message does not.
-                            table.insert(diagnostics, {
-                                lnum = math.max((e.line or 1) - 1, 0),
-                                col = math.max((e.column or 1) - 1, 0),
-                                end_lnum = math.max((e.line or 1) - 1, 0),
-                                end_col = math.max((e.column or 1) - 1, 0),
-                                message = e.message:gsub('%s+$', '') .. (e.rule and (' (' .. e.rule .. ')') or ''),
-                                code = e.rule,
-                                severity = vim.diagnostic.severity.WARN,
-                                source = 'ktlint',
-                            })
-                        end
-                    end
-                    return diagnostics
-                end,
-            }
-        end
-
-        lint.linters_by_ft = vim.tbl_extend('force', lint.linters_by_ft or {}, { kotlin = { 'ktlint' } })
-
-        vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufWritePost' }, {
-            group = vim.api.nvim_create_augroup('KtlintOnWrite', { clear = true }),
-            pattern = '*.kt',
-            desc = 'Lint Kotlin with ktlint + compose ruleset',
-            callback = function() lint.try_lint() end,
         })
     end,
 },
