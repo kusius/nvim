@@ -5,7 +5,7 @@
 
 # --- Base ------------------------------------------------------------------
 brew "neovim"          # >= 0.12: nvim-treesitter `main` branch + vim.lsp.config
-brew "git"             # lazy.nvim bootstrap (lua/gmk/lazy.lua), lazygit, octo
+brew "git"             # lazy.nvim bootstrap (lua/gmk/lazy.lua), octo
 # `make` and a C compiler are also required (telescope-fzf-native's
 # `build = "make"`, plus treesitter parser compilation). Both come from the
 # Xcode Command Line Tools, which Homebrew cannot install:
@@ -30,12 +30,6 @@ brew "ruby-build"
 
 tap "JetBrains/utils"
 brew "JetBrains/utils/kotlin-lsp"
-
-# --- Terminal integrations (lua/plugins/toggleterm.lua) --------------------
-brew "lazygit"                 # <leader>lz
-cask "copilot-cli"             # <leader>co
-cask "claude-code"             # <leader>cl — skip if you use the native
-                               # installer at ~/.local/bin/claude
 
 # --- GitHub (octo.nvim, pr.nvim) -------------------------------------------
 brew "gh"                      # run `gh auth login` afterwards

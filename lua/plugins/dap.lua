@@ -127,14 +127,14 @@ return  {
             end
 
             -- Keymap
-            vim.keymap.set("n", "<F5>",  dap.continue)
-            vim.keymap.set("n", "<leader>b", function() dap.toggle_breakpoint() end)
-            vim.keymap.set("n", "<F10>", dap.step_over)
-            vim.keymap.set("n", "<F11>", dap.step_into)
-            vim.keymap.set("n", "<F12>", dap.step_out)
-            vim.keymap.set("n", "<leader>du", dapui.toggle)
+            vim.keymap.set("n", "<F5>",  dap.continue, { desc = "DAP: start or continue" })
+            vim.keymap.set("n", "<leader>b", function() dap.toggle_breakpoint() end, { desc = "DAP: toggle breakpoint" })
+            vim.keymap.set("n", "<F10>", dap.step_over, { desc = "DAP: step over" })
+            vim.keymap.set("n", "<F11>", dap.step_into, { desc = "DAP: step into" })
+            vim.keymap.set("n", "<F12>", dap.step_out, { desc = "DAP: step out" })
+            vim.keymap.set("n", "<leader>du", dapui.toggle, { desc = "DAP: toggle UI" })
             -- evaluate expression under cursor
-            vim.keymap.set("n", "<leader>de", dapui.eval)
+            vim.keymap.set("n", "<leader>de", dapui.eval, { desc = "DAP: evaluate expression under cursor" })
         end,
     }
 }
