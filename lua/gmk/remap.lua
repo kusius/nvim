@@ -20,7 +20,7 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.keymap.set("n", "<leader>ta", "<CMD>A<CR>",  { desc = "Rails: alternate (impl <-> spec)" })
 vim.keymap.set("n", "<leader>tv", "<CMD>AV<CR>", { desc = "Rails: alternate in vsplit" })
 
--- toggleterm
+-- :terminal
 vim.keymap.set("t", "<C-q>", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
 
 -- Hand the current file and cursor to Android Studio, for what it still does better:
