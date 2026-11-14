@@ -14,10 +14,16 @@ return {
         "lewis6991/gitsigns.nvim",
         lazy = false,
         config = function()
-            require("gitsigns").setup {
+            local gitsigns = require("gitsigns")
+            gitsigns.setup {
                 auto_attach = true,
                 current_line_blame = true,
             }
+            vim.keymap.set('n', '<leader>gd', gitsigns.diffthis, { desc = 'Gitsigns: diff file against index' })
+            vim.keymap.set('n', '<leader>gp', gitsigns.preview_hunk, { desc = 'Gitsigns: preview hunk diff' })
+            vim.keymap.set('n', '<leader>gb', gitsigns.blame, { desc = 'Gitsigns: blame file' })
+            vim.keymap.set('n', '<leader>gl', function() gitsigns.blame_line({ full = true }) end,
+                { desc = 'Gitsigns: blame line (full commit)' })
         end,
     },
     {
