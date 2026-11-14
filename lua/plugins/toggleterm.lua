@@ -18,7 +18,7 @@ return {
                 },
                 on_open = function(term)
                     vim.cmd("startinsert!")
-                    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
+                    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true, desc = "Close lazygit" })
                 end,
                 on_close = function(term)
                     vim.cmd("startinsert!")
@@ -39,7 +39,7 @@ return {
                         vim.cmd("startinsert!")
                         vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q",
                             "<cmd>close<CR>",
-                            { noremap = true, silent = true })
+                            { noremap = true, silent = true, desc = "Close " .. cmd })
                     end,
                     on_close = function(term)
                         vim.cmd("startinsert!")
@@ -63,12 +63,12 @@ return {
             end
 
             -- keymaps
-            vim.api.nvim_set_keymap("n", "<leader>lz", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true })
-            vim.api.nvim_set_keymap("n", "<leader>cl", "<cmd>lua _claude_toggle()<CR>", { noremap = true, silent = true })
-            vim.api.nvim_set_keymap("n", "<leader>co", "<cmd>lua _copilot_toggle()<CR>", { noremap = true, silent = true })
-            vim.keymap.set("n", "<C-`>", "<CMD>ToggleTerm<CR>")
-            vim.keymap.set("t", "<C-`>", "<CMD>ToggleTerm<CR>")
-            vim.keymap.set("v", "<space>s","<cmd>ToggleTermSendVisualSelection<cr>")
+            vim.api.nvim_set_keymap("n", "<leader>lz", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true, desc = "Toggleterm: toggle lazygit" })
+            vim.api.nvim_set_keymap("n", "<leader>cl", "<cmd>lua _claude_toggle()<CR>", { noremap = true, silent = true, desc = "Toggleterm: toggle Claude Code" })
+            vim.api.nvim_set_keymap("n", "<leader>co", "<cmd>lua _copilot_toggle()<CR>", { noremap = true, silent = true, desc = "Toggleterm: toggle Copilot CLI" })
+            vim.keymap.set("n", "<C-`>", "<CMD>ToggleTerm<CR>", { desc = "Toggleterm: toggle terminal" })
+            vim.keymap.set("t", "<C-`>", "<CMD>ToggleTerm<CR>", { desc = "Toggleterm: toggle terminal" })
+            vim.keymap.set("v", "<space>s","<cmd>ToggleTermSendVisualSelection<cr>", { desc = "Toggleterm: send selection and run it" })
 
             -- Send to terminal without executing (no trailing newline)
             local function send_no_exec(text, id)
@@ -82,8 +82,8 @@ return {
                 send_no_exec(table.concat(lines, "\n"))
             end, { range = true })
 
-            vim.keymap.set("n", "<space>S", "<cmd>TermStage<cr>")
-            vim.keymap.set("v", "<space>S", ":TermStage<cr>")
+            vim.keymap.set("n", "<space>S", "<cmd>TermStage<cr>", { desc = "Toggleterm: send line, do not run it" })
+            vim.keymap.set("v", "<space>S", ":TermStage<cr>", { desc = "Toggleterm: send selection, do not run it" })
         end,
     }
 }
