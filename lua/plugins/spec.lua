@@ -34,6 +34,7 @@ return {
             require("cendre").setup({
                 background = "cendre", -- "hard" | "medium" | "soft"
                 italic_virtual_text = true,
+                transparent = true,
             })
             vim.cmd.colorscheme("cendre")
         end,
