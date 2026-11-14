@@ -34,12 +34,13 @@ vim.lsp.config('kotlin_lsp', {
 })
 vim.lsp.enable('kotlin_lsp')
 
--- Go-to-definition into a library returns jar:///path/to.jar!/pkg/Class.class, which
--- Neovim cannot read: it opens an empty buffer and then errors on the cursor position
+-- Go-to-definition into a library returns a jar: or jrt: URI, which Neovim cannot
+-- read: it opens an empty buffer and then errors on the cursor position
 -- (Kotlin/kotlin-lsp#44). Fill such buffers with the server's own decompiled source.
 vim.api.nvim_create_autocmd('BufReadCmd', {
   group = vim.api.nvim_create_augroup('KotlinDecompile', { clear = true }),
-  pattern = { 'jar://*', 'jrt://*' },
+  -- Each pattern needs a '/': without one, Neovim matches only the file's tail (HttpClient.kt).
+  pattern = { 'jar:/*', 'jrt:/*' },
   desc = 'Decompile jar:/jrt: class files via kotlin-lsp',
   callback = function(args)
     local uri = vim.fn.expand('<amatch>')
