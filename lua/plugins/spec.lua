@@ -157,10 +157,33 @@ return {
         lazy = false,
     },
     {
-        "maelwalser/oil-bar.nvim",
-        dependencies = { "stevearc/oil.nvim" },
-        opts = {
-            keymap = "<leader>p" 
+        "nvim-mini/mini.files",
+        dependencies = { "nvim-mini/mini.icons" },
+        config = function()
+            require("mini.files").setup()
+            -- <CR> opens the file and closes the tree, like 'L'. mini.files maps no <CR> itself.
+            vim.api.nvim_create_autocmd("User", {
+                group = vim.api.nvim_create_augroup("MiniFilesEnter", { clear = true }),
+                pattern = "MiniFilesBufferCreate",
+                callback = function(args)
+                    vim.keymap.set("n", "<CR>", function() MiniFiles.go_in({ close_on_file = true }) end,
+                        { buffer = args.data.buf_id, desc = "MiniFiles: open entry" })
+                end,
+            })
+        end,
+        keys = {
+            {
+                "<leader>p",
+                function()
+                    -- Open at the current file, so the tree shows its directory with it selected.
+                    -- An Oil buffer has an oil:// name, so ask Oil for its directory instead.
+                    local path = vim.bo.filetype == "oil" and require("oil").get_current_dir()
+                        or vim.api.nvim_buf_get_name(0)
+                    if path == nil or not vim.uv.fs_stat(path) then path = nil end
+                    require("mini.files").open(path, false)
+                end,
+                desc = "MiniFiles: open tree at current file",
+            },
         },
     },
     {
