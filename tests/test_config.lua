@@ -106,7 +106,6 @@ end
 -- checked. parametrize runs the same case once per server, and reports each
 -- one separately.
 T["lsp"] = MiniTest.new_set({
-  -- kmp_lsp is commented out in lsp.lua: kotlin-lsp replaced it for Kotlin work.
   parametrize = { { "ruby_lsp" }, { "luals" }, { "clangd" }, { "kotlin_lsp" }, { "c3lsp" }, { "gopls" } },
 })
 

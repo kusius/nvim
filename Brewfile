@@ -28,10 +28,8 @@ brew "go"              # toolchain for gopls (see manual steps below)
 brew "rbenv"           # ruby_lsp cmd is hard-coded to ~/.rbenv/shims/ruby-lsp
 brew "ruby-build"
 
-# kotlin_lsp connects to 127.0.0.1:9999 and expects a server you start yourself.
-# Left commented: as of 2026-08-06 the standalone JetBrains servers could not
-# handle the AGP 9 Android project, and that integration was reverted.
-# brew "kotlin-lsp"
+tap "JetBrains/utils"
+brew "JetBrains/utils/kotlin-lsp"
 
 # --- Terminal integrations (lua/plugins/toggleterm.lua) --------------------
 brew "lazygit"                 # <leader>lz

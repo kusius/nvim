@@ -23,53 +23,14 @@ vim.lsp.config('clangd', {
 
 vim.lsp.enable('clangd')
 
--- kmp-lsp: Rust/tree-sitter Kotlin+Java server (github.com/Hessesian/kmp-lsp).
--- vim.lsp.config('kmp_lsp', {
---     cmd = { vim.fn.expand('~/.local/bin/kmp-lsp') },
---     filetypes = { 'kotlin', 'java' },
---     -- Open the project as ~/work/... (its real case). Via ~/Work, find-references
---     -- silently returns nothing.
---     root_markers = { 'settings.gradle.kts', 'settings.gradle', 'pom.xml', '.git' },
--- })
--- vim.lsp.enable('kmp_lsp')
-
--- JetBrains kotlin-lsp -- kept for pure-Kotlin/JVM projects, where it is the
--- stronger tool (real FIR diagnostics). Useless on Android: see above.
--- Install: brew install JetBrains/utils/kotlin-lsp
--- The -D property is required or the Gradle import dies outright -- the bundled
--- JBR is a 'nomod' build with no jlink, so AGP's JdkImageTransform fails
--- (Kotlin/kotlin-lsp#240, still open in 263.4702.0). JAVA_HOME is ignored.
--- IntelliJ inspections with no server-side off switch (Kotlin/kotlin-lsp#52). FunctionName
--- fires on every @Composable, since the server has no Compose awareness (#191). ktlint with
--- the compose ruleset reports naming correctly instead -- see nvim-lint in plugins/spec.lua.
--- The server uses pull diagnostics, so publishDiagnostics is never called: filter here.
-local ignored_kotlin_diagnostics = { FunctionName = true }
-
-local function drop_ignored_diagnostics(result)
-    if result and result.items then
-        local kept = {}
-        for _, d in ipairs(result.items) do
-            if not ignored_kotlin_diagnostics[d.code] then kept[#kept + 1] = d end
-        end
-        result.items = kept
-    end
-    return result
-end
-
+-- JetBrains kotlin-lsp. Install: brew install JetBrains/utils/kotlin-lsp
 vim.lsp.config('kotlin_lsp', {
     -- Without --system-path, indexes live in a temp dir that is wiped on exit.
     cmd = { 'kotlin-lsp', '--stdio', '--system-path=' .. vim.fn.stdpath('cache') .. '/kotlin-lsp' },
     filetypes = { 'kotlin' },
-    handlers = {
-        ['textDocument/diagnostic'] = function(err, result, ctx, config)
-            return vim.lsp.handlers['textDocument/diagnostic'](err, drop_ignored_diagnostics(result), ctx, config)
-        end,
-    },
-    cmd_env = {
-        IJ_JAVA_OPTIONS = '-Dcom.jetbrains.ls.imports.gradle.java.home='
-            .. '/Users/georgek/Library/Java/JavaVirtualMachines/corretto-21.0.7/Contents/Home',
-    },
-    root_markers = { 'settings.gradle.kts', 'settings.gradle', 'build.gradle.kts', 'pom.xml', '.git' },
+    -- workspace.json: the build-tool-free project model nob.kt writes (writeWorkspace), before .git so that
+    -- an example inside a repository is its own root.
+    root_markers = { 'settings.gradle.kts', 'settings.gradle', 'build.gradle.kts', 'pom.xml', 'workspace.json', '.git' },
 })
 vim.lsp.enable('kotlin_lsp')
 
