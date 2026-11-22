@@ -1,5 +1,21 @@
 return {
     {
+        "shortcuts/no-neck-pain.nvim",
+        opts = {
+            buffers = {
+                -- window-local fillchars replaces the global value, so set vert here too
+                wo = { fillchars = "eob: ,vert: " }
+            },
+            autocmds = { enableOnVimEnter = true },
+        },
+        config = function(_, opts)
+            require("no-neck-pain").setup(opts)
+            -- hide the vertical separator lines (global, affects all splits)
+            vim.opt.fillchars:append({ vert = " " })
+            vim.api.nvim_set_hl(0, "WinSeparator", { fg = "NONE", bg = "NONE" })
+        end
+        },
+    {
         "0xKitsune/pr.nvim",
         -- or use a local path:
         -- dir = "~/path/to/pr.nvim",
@@ -215,7 +231,10 @@ return {
 
         require("lualine").setup({
             winbar = {
-                lualine_c = { { 'filename', path = 0, file_status = true} },
+                lualine_c = { {
+                    'filename', path = 0, file_status = true,
+                    color = { gui = 'bold' },
+                } },
             },
             inactive_winbar = {
                 lualine_c = { { 'filename', path = 0, file_status = true } },
