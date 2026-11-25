@@ -287,6 +287,10 @@ return {
         keymap = { 
             preset = 'default',
             ['<C-S-i>'] = { 'show', 'show_documentation', 'hide_documentation' },
+            -- each action runs only when it applies (menu open, inside a snippet), else falls back to the plain key
+            ['<Tab>'] = { 'select_next', 'snippet_forward', 'fallback' },
+            ['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
+            ['<CR>'] = { 'accept', 'fallback' },
         },
 
         appearance = {
