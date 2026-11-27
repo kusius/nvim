@@ -126,6 +126,21 @@ return  {
                 return configs
             end
 
+            -- Optional machine-specific setup (gitignored): lua/local/dap_work.lua
+            -- returns function(dap). See lua/dap_rdbg.lua for a generic Ruby attach.
+            local ok, local_setup = pcall(require, "local.dap_work")
+            if ok and type(local_setup) == "function" then
+                local_setup(dap)
+            elseif not ok and not tostring(local_setup):find("module 'local.dap_work' not found", 1, true) then
+                vim.notify(tostring(local_setup), vim.log.levels.WARN, { title = "DAP local setup" })
+            end
+
+            -- Breakpoint signs (nvim-dap's default is a plain "B")
+            vim.api.nvim_set_hl(0, "DapBreakpointRed", { fg = "#e51400" })
+            vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "DapBreakpointRed" })
+            vim.fn.sign_define("DapBreakpointCondition", { text = "◆", texthl = "DapBreakpointRed" })
+            vim.fn.sign_define("DapBreakpointRejected", { text = "○", texthl = "DapBreakpointRed" })
+
             -- Keymap
             vim.keymap.set("n", "<F5>",  dap.continue, { desc = "DAP: start or continue" })
             vim.keymap.set("n", "<leader>b", function() dap.toggle_breakpoint() end, { desc = "DAP: toggle breakpoint" })
